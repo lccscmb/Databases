@@ -1,0 +1,50 @@
+import csv
+
+#Function to read all contacts from the CSV file
+def readContacts():
+    contacts = {}
+    try:
+        with open('contacts.csv',mode='r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                contacts[row['contactId']]={'fullName':row['fullName'], 'contactAge':row['contactAge']}
+    except FileNotFoundError:
+        print("The file does not exist yet. Starting fresh!")
+    return contacts
+#Function to add a new contact to the CSV file
+def addContact(contactId, fullName, contactAge):
+    with open('contacts.csv', mode ='a', newline='') as file:
+        writer=csv.writer(file)
+        writer.writerow([contactId, fullName, contactAge])
+    print(f"Contact {fullName} added successfully!")
+#Function to display all contacts from the CSV file
+def displayContacts():
+    contacts = readContacts()
+    if not contacts:
+        print("No contacts in the database.")
+    else:
+        for contactId, contactInfo in contacts.items():
+            print(f"{contactInfo['fullName']} (ID: {contactId}, Age: {contactInfo['contactAge']})")
+#Main program loop
+def main():
+    while True:
+        print("\nChoose an option:")
+        print("1. View all contacts")
+        print("2. Add new contact")
+        print("3. Exit")
+        choice = input("Enter your choice: ")
+        
+        if choice == "1":
+            displayContacts()
+        elif choice =="2":
+            contactId = input("Enter contact ID: ")
+            fullName = input("Enter contact full name: ")
+            contactAge = input("Enter contact Age: ")
+            addContact(contactId, fullName, contactAge)
+        elif choice == "3":
+            print("Exiting program")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+#Run the program
+main()
