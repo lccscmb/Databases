@@ -1,0 +1,37 @@
+import csv
+
+#Read students data
+def read_students():
+    students = {}
+    with open ('students.csv', mode = 'r') as file:
+        reader = csv.DictReader(file)
+        print("Students Table:")
+        for row in reader:
+            print(row)
+            students[row['studentid']]=row
+    return students
+
+#Read enrollments data
+def read_enrollments():
+    enrollments=[]
+    with open ('enrollments.csv', mode = 'r') as file:
+        reader = csv.DictReader(file)
+        print("\nEnrollments Table:")
+        for row in reader:
+            print(row)
+            enrollments.append(row)
+    return enrollments
+
+#Link students and their courses
+def link_data():
+    students=read_students()
+    enrollments=read_enrollments()
+    
+    print("\nComparing Enrollments with Students...")
+    for enrollment in enrollments:
+        student=students.get(enrollment['studentid'])
+        if student:
+            print(f"{student['name']} is enrolled in {enrollment['course']}")
+        else:
+            print(f"Student with ID {enrollment['studentid']} not found!")
+link_data()
